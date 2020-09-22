@@ -36,17 +36,17 @@ Node* buildTree(int* array, int size){
     return root;
 }
 
-void preOrderSearch(Node* root){
-    
-}
+void preOrderIterativeSearch(Node* root){}
 
-void inOrderSearch(Node* root){
-    
-}
+void preOrderRecursiveSearch(Node* root){}
 
-void postOrderSearch(Node* root){
-    
-}
+void inOrderIterativeSearch(Node* root){}
+
+void inOrderRecursiveSearch(Node* root){}
+
+void postOrderIterativeSearch(Node* root){}
+
+void postOrderRecursiveSearch(Node* root){}
 
 int main(int argc, char **argv)
 {
