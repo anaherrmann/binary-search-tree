@@ -36,6 +36,18 @@ Node* buildTree(int* array, int size){
     return root;
 }
 
+void preOrderSearch(Node* root){
+    
+}
+
+void inOrderSearch(Node* root){
+    
+}
+
+void postOrderSearch(Node* root){
+    
+}
+
 int main(int argc, char **argv)
 {
     if (argc == 1)
@@ -46,8 +58,8 @@ int main(int argc, char **argv)
     }
     else if (argc >= 3)
     {
-        //cout << argv[1] << endl;
-        //cout << argv[2] << endl;
+        cout << "Input counter: " << argv[1] << endl;
+        cout << "File name: " << argv[2] << endl << endl;
     }
 
     stringstream str;
@@ -71,7 +83,6 @@ int main(int argc, char **argv)
 
     while(dataFile >> integer){
         dataArray[counter] = integer;
-        cout << integer << " ";
         counter++;
     }
 
