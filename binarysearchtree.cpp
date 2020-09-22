@@ -1,16 +1,40 @@
-/*
-- recebe a localizacao de um arquivo txt
-- abre o arquivo e preenche a árvore conforme a entrada
-- pra cada árvore montada, realizar as seis buscas
-- a saída é o tempo que levou pra chegar na última folha
-*/
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 
 using namespace std;
+
+struct Node
+{
+    int data;
+    Node *left, *right;
+    
+    Node(int data){
+        this->data = data;
+        this->left = this->right = nullptr;
+    };
+};
+
+void insert(Node **root, int data){
+    if(*root == NULL){
+        *root = new Node(data);
+    }
+    else if((*root)->data <= data){
+        insert(&((*root)->right), data);
+    }
+    else if((*root)->data > data){
+        insert(&((*root)->left), data);
+    }
+}
+
+Node* buildTree(int* array, int size){
+    Node* root = NULL;
+    for(int i = 0; i < size; i++){
+        insert(&root, array[i]);
+    }
+    return root;
+}
 
 int main(int argc, char **argv)
 {
@@ -22,34 +46,40 @@ int main(int argc, char **argv)
     }
     else if (argc >= 3)
     {
-        cout << argv[1] << endl;
-        cout << argv[2] << endl;
+        //cout << argv[1] << endl;
+        //cout << argv[2] << endl;
     }
 
     stringstream str;
     str << argv[1];
-    int file_size;
-    str >> file_size;
+    int inputCount;
+    str >> inputCount;
 
-    string file_path = argv[2];
+    string filePath = argv[2];
 
-    ifstream data_file;
-    data_file.open(file_path);
+    ifstream dataFile;
+    dataFile.open(filePath);
 
-    if(!data_file.is_open()){
+    if(!dataFile.is_open()){
         cout << "\nError opening file.\n";
         exit(1);
     }
 
-    int data_array[file_size];
+    int dataArray[inputCount];
     int counter = 0;
     int integer;
 
-    while(data_file >> integer){
-        data_array[counter] = integer;
+    while(dataFile >> integer){
+        dataArray[counter] = integer;
         cout << integer << " ";
         counter++;
     }
+
+    cout << endl << endl;
+
+    Node *root = buildTree(dataArray, inputCount);
+    cout << root->data << endl;
+
 
     return 0;
 }
