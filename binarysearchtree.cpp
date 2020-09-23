@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <stack>
 
 using namespace std;
 
@@ -36,17 +37,69 @@ Node* buildTree(int* array, int size){
     return root;
 }
 
-void preOrderIterativeSearch(Node* root){}
+void preOrderIterativeSearch(Node* root){
+    if(root == nullptr){
+        return;
+    }
 
-void preOrderRecursiveSearch(Node* root){}
+    stack<Node*> stack;
+    stack.push(root);
+
+    Node* current = root;
+
+    while(!stack.empty()){
+        if(current != nullptr) {
+            cout << current->data << " ";
+
+            if(current->right) 
+                stack.push(current->right);
+
+            current = current->left;
+        }
+        else {
+            current = stack.top();
+            stack.pop();
+        }
+    }
+    
+}
+
+void preOrderRecursiveSearch(Node* root){
+    if(root == nullptr)
+        return;
+
+    cout << root->data << " ";
+
+    preOrderRecursiveSearch(root->left);
+
+    preOrderRecursiveSearch(root->right);
+}
 
 void inOrderIterativeSearch(Node* root){}
 
-void inOrderRecursiveSearch(Node* root){}
+void inOrderRecursiveSearch(Node* root){
+     if(root == nullptr)
+        return;
+
+    preOrderRecursiveSearch(root->left);
+
+    cout << root->data << " ";
+
+    preOrderRecursiveSearch(root->right);
+}
 
 void postOrderIterativeSearch(Node* root){}
 
-void postOrderRecursiveSearch(Node* root){}
+void postOrderRecursiveSearch(Node* root){
+     if(root == nullptr)
+        return;
+
+    preOrderRecursiveSearch(root->left);
+
+    preOrderRecursiveSearch(root->right);
+
+    cout << root->data << " ";    
+}
 
 int main(int argc, char **argv)
 {
@@ -89,8 +142,13 @@ int main(int argc, char **argv)
     cout << endl << endl;
 
     Node *root = buildTree(dataArray, inputCount);
-    cout << root->data << endl;
-
+    
+    preOrderRecursiveSearch(root);
+    cout << endl << endl;
+    inOrderRecursiveSearch(root);
+    cout << endl << endl;
+    postOrderRecursiveSearch(root);
+    cout << endl << endl;
 
     return 0;
 }
