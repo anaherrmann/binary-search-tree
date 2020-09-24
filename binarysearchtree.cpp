@@ -60,8 +60,7 @@ void preOrderIterativeSearch(Node* root){
             current = stack.top();
             stack.pop();
         }
-    }
-    
+    }    
 }
 
 void preOrderRecursiveSearch(Node* root){
@@ -75,28 +74,73 @@ void preOrderRecursiveSearch(Node* root){
     preOrderRecursiveSearch(root->right);
 }
 
-void inOrderIterativeSearch(Node* root){}
+void inOrderIterativeSearch(Node* root){
+    if(root == nullptr){
+        return;
+    }
+
+    stack<Node*> stack;
+
+    Node* current = root;
+
+    while(!stack.empty() || current != nullptr){
+        if(current != nullptr) {
+            stack.push(current);
+            current = current->left;                   
+        }
+        else {            
+            current = stack.top();
+            stack.pop();
+            cout << current->data << " ";
+            current = current->right;
+        }
+    }
+}
 
 void inOrderRecursiveSearch(Node* root){
      if(root == nullptr)
         return;
 
-    preOrderRecursiveSearch(root->left);
+    inOrderRecursiveSearch(root->left);
 
     cout << root->data << " ";
 
-    preOrderRecursiveSearch(root->right);
+    inOrderRecursiveSearch(root->right);
 }
 
-void postOrderIterativeSearch(Node* root){}
+void postOrderIterativeSearch(Node* root){
+    stack<Node*> stk;
+    stk.push(root);
+
+    stack<int> out;
+
+    while(!stk.empty()){
+        Node* current = stk.top();
+        stk.pop();
+
+        out.push(current->data);
+
+        if(current->left)
+            stk.push(current->left);
+
+        if(current->right)
+            stk.push(current->right);
+    }
+
+    while(!out.empty()){
+        cout << out.top() << " ";
+        out.pop();
+    }
+
+}
 
 void postOrderRecursiveSearch(Node* root){
      if(root == nullptr)
         return;
 
-    preOrderRecursiveSearch(root->left);
+    postOrderRecursiveSearch(root->left);
 
-    preOrderRecursiveSearch(root->right);
+    postOrderRecursiveSearch(root->right);
 
     cout << root->data << " ";    
 }
@@ -148,6 +192,14 @@ int main(int argc, char **argv)
     inOrderRecursiveSearch(root);
     cout << endl << endl;
     postOrderRecursiveSearch(root);
+    cout << endl << endl;
+    cout << endl << endl;
+
+    preOrderIterativeSearch(root);
+    cout << endl << endl;
+    inOrderIterativeSearch(root);
+    cout << endl << endl;
+    postOrderIterativeSearch(root);
     cout << endl << endl;
 
     return 0;
