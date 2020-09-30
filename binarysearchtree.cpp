@@ -3,9 +3,9 @@
 #include <string>
 #include <sstream>
 #include <stack>
+#include <chrono>
 
 using namespace std;
-
 struct Node
 {
     int data;
@@ -17,7 +17,9 @@ struct Node
     };
 };
 
-void insert(Node **root, int data){
+typedef void (*treeSearches) (Node* root);
+
+void insert(Node **root, int data){    
     if(*root == NULL){
         *root = new Node(data);
     }
@@ -29,10 +31,34 @@ void insert(Node **root, int data){
     }
 }
 
+Node* insertIterative(Node* root, int data){
+    Node* newNode = new Node(data);
+
+    Node* x = root;
+    Node* y = NULL;
+
+    while(x != NULL){
+        y = x;
+        if(data < x->data)
+            x = x->left;
+        else
+            x = x->right;
+    }
+
+    if(y == NULL)
+        y = newNode;
+    else if(data < y->data)
+        y->left = newNode;
+    else 
+        y->right = newNode;
+    
+    return y;
+}
+ 
 Node* buildTree(int* array, int size){
-    Node* root = NULL;
+    Node* root = new Node(array[0]);
     for(int i = 0; i < size; i++){
-        insert(&root, array[i]);
+        insertIterative(root, array[i]);
     }
     return root;
 }
@@ -41,7 +67,7 @@ void preOrderIterativeSearch(Node* root){
     if(root == nullptr){
         return;
     }
-
+    //cout << "teste" << endl;
     stack<Node*> stack;
     stack.push(root);
 
@@ -49,7 +75,7 @@ void preOrderIterativeSearch(Node* root){
 
     while(!stack.empty()){
         if(current != nullptr) {
-            cout << current->data << " ";
+            //cout << current->data << " ";
 
             if(current->right) 
                 stack.push(current->right);
@@ -67,7 +93,7 @@ void preOrderRecursiveSearch(Node* root){
     if(root == nullptr)
         return;
 
-    cout << root->data << " ";
+    //cout << root->data << " ";
 
     preOrderRecursiveSearch(root->left);
 
@@ -91,7 +117,7 @@ void inOrderIterativeSearch(Node* root){
         else {            
             current = stack.top();
             stack.pop();
-            cout << current->data << " ";
+            //cout << current->data << " ";
             current = current->right;
         }
     }
@@ -103,7 +129,7 @@ void inOrderRecursiveSearch(Node* root){
 
     inOrderRecursiveSearch(root->left);
 
-    cout << root->data << " ";
+    //cout << root->data << " ";
 
     inOrderRecursiveSearch(root->right);
 }
@@ -128,7 +154,7 @@ void postOrderIterativeSearch(Node* root){
     }
 
     while(!out.empty()){
-        cout << out.top() << " ";
+        //cout << out.top() << " ";
         out.pop();
     }
 
@@ -142,7 +168,7 @@ void postOrderRecursiveSearch(Node* root){
 
     postOrderRecursiveSearch(root->right);
 
-    cout << root->data << " ";    
+    //cout << root->data << " ";    
 }
 
 int main(int argc, char **argv)
@@ -155,8 +181,8 @@ int main(int argc, char **argv)
     }
     else if (argc >= 3)
     {
-        cout << "Input counter: " << argv[1] << endl;
-        cout << "File name: " << argv[2] << endl << endl;
+        //cout << "Input counter: " << argv[1] << endl;
+        //cout << "File name: " << argv[2] << endl << endl;
     }
 
     stringstream str;
@@ -186,21 +212,37 @@ int main(int argc, char **argv)
     cout << endl << endl;
 
     Node *root = buildTree(dataArray, inputCount);
+
+    treeSearches searches[] =
+    {   
+        preOrderIterativeSearch,
+        preOrderRecursiveSearch,
+        inOrderIterativeSearch,
+        inOrderRecursiveSearch,
+        postOrderIterativeSearch,
+        postOrderRecursiveSearch
+    };
+
+    chrono::steady_clock::time_point begin;
+    chrono::steady_clock::time_point end;
     
-    preOrderRecursiveSearch(root);
-    cout << endl << endl;
-    inOrderRecursiveSearch(root);
-    cout << endl << endl;
-    postOrderRecursiveSearch(root);
-    cout << endl << endl;
-    cout << endl << endl;
+    int time_ns = 0;
+    cout << inputCount << " ";
+    for (int i = 0; i < 6; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            begin = chrono::steady_clock::now();
+            searches[i](root);
+            end = chrono::steady_clock::now();
 
-    preOrderIterativeSearch(root);
-    cout << endl << endl;
-    inOrderIterativeSearch(root);
-    cout << endl << endl;
-    postOrderIterativeSearch(root);
-    cout << endl << endl;
+            time_ns += chrono::duration_cast<chrono::nanoseconds> (end - begin).count();
+        } 
 
+        cout << (time_ns/10) << " ";  
+        time_ns = 0; 
+    }    
+    cout << endl;
+    
     return 0;
 }
