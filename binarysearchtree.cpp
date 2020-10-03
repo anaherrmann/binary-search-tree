@@ -135,6 +135,10 @@ void inOrderRecursiveSearch(Node* root){
 }
 
 void postOrderIterativeSearch(Node* root){
+    if(root == nullptr){
+        return;
+    }
+    
     stack<Node*> stk;
     stk.push(root);
 
@@ -208,10 +212,11 @@ int main(int argc, char **argv)
         dataArray[counter] = integer;
         counter++;
     }
-
+    int dataAux[150000];
+    copy(dataArray, dataArray + 150000, dataAux);
     cout << endl << endl;
 
-    Node *root = buildTree(dataArray, inputCount);
+    Node *root = buildTree(dataAux, inputCount);
 
     treeSearches searches[] =
     {   
