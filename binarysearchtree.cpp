@@ -75,7 +75,7 @@ void preOrderIterativeSearch(Node* root){
 
     while(!stack.empty()){
         if(current != nullptr) {
-            //cout << current->data << " ";
+            cout << current->data << " ";
 
             if(current->right) 
                 stack.push(current->right);
@@ -93,7 +93,7 @@ void preOrderRecursiveSearch(Node* root){
     if(root == nullptr)
         return;
 
-    //cout << root->data << " ";
+    cout << root->data << " ";
 
     preOrderRecursiveSearch(root->left);
 
@@ -117,7 +117,7 @@ void inOrderIterativeSearch(Node* root){
         else {            
             current = stack.top();
             stack.pop();
-            //cout << current->data << " ";
+            cout << current->data << " ";
             current = current->right;
         }
     }
@@ -129,7 +129,7 @@ void inOrderRecursiveSearch(Node* root){
 
     inOrderRecursiveSearch(root->left);
 
-    //cout << root->data << " ";
+    cout << root->data << " ";
 
     inOrderRecursiveSearch(root->right);
 }
@@ -158,7 +158,7 @@ void postOrderIterativeSearch(Node* root){
     }
 
     while(!out.empty()){
-        //cout << out.top() << " ";
+        cout << out.top() << " ";
         out.pop();
     }
 
@@ -172,7 +172,7 @@ void postOrderRecursiveSearch(Node* root){
 
     postOrderRecursiveSearch(root->right);
 
-    //cout << root->data << " ";    
+    cout << root->data << " ";    
 }
 
 int main(int argc, char **argv)
