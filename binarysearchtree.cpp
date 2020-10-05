@@ -19,15 +19,15 @@ struct Node
 
 typedef void (*treeSearches) (Node* root);
 
-void insert(Node **root, int data){    
+void insertRecursive(Node **root, int data){    
     if(*root == NULL){
         *root = new Node(data);
     }
     else if((*root)->data <= data){
-        insert(&((*root)->right), data);
+        insertRecursive(&((*root)->right), data);
     }
     else if((*root)->data > data){
-        insert(&((*root)->left), data);
+        insertRecursive(&((*root)->left), data);
     }
 }
 
@@ -67,7 +67,7 @@ void preOrderIterativeSearch(Node* root){
     if(root == nullptr){
         return;
     }
-    //cout << "teste" << endl;
+
     stack<Node*> stack;
     stack.push(root);
 
